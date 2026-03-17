@@ -1,0 +1,60 @@
+<!-- templates/hh_success.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Registration Successful</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 40px;
+        }
+        .success-box {
+            border: 2px solid #4CAF50;
+            padding: 30px;
+            border-radius: 10px;
+            max-width: 600px;
+            margin: 0 auto;
+            background: #f9f9f9;
+        }
+        a.button {
+            display: inline-block;
+            margin: 10px;
+            padding: 10px 20px;
+            background-color: #1e3c72;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        a.button:hover {
+            background-color: #2a5298;
+        }
+    </style>
+</head>
+<body>
+
+<div class="success-box">
+    <h2>Registration Successful!</h2>
+    <p>{{ message }}</p>
+    <p><strong>Your Household ID:</strong> {{ household_id }}</p>
+    
+    <hr>
+    
+    <h3>Next Steps:</h3>
+    <p>Click below to manage your CDC vouchers:</p>
+    <a href="/vouchers/{{ household_id }}" class="button">
+        Go to Voucher Management →
+    </a>
+    <p style="margin-top: 15px; color: #666;">
+        You can claim voucher tranches, check your balance, and view all your vouchers.
+    </p>
+</div>
+
+{% if not is_new %}
+<script>
+    alert("{{ message }}");
+</script>
+{% endif %}
+
+</body>
+</html>

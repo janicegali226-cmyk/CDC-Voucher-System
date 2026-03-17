@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Redeem Vouchers - {{ household_id }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        /* 基础样式保持不变 */
+        .count-input { width: 60px; height: 40px; text-align: center; font-size: 1.5rem; font-weight: bold; border: 1px solid #ddd; border-radius: 4px; margin: 0 5px; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
+        body { background: #f5f7fa; padding: 20px; }
+        .container { max-width: 600px; margin: 0 auto; background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header { background: #1e3c72; color: white; padding: 20px; display: flex; justify-content: space-between; align-items: center; }
+        .header a { color: white; text-decoration: none; font-size: 0.9rem; border: 1px solid white; padding: 5px 10px; border-radius: 4px; }
+        .balance-bar { background: #e8f5e9; padding: 15px; text-align: center; border-bottom: 1px solid #ddd; }
+        .balance-val { font-size: 2rem; color: #28a745; font-weight: bold; }
+        .selection-area { padding: 20px; }
+        .denom-row { display: flex; justify-content: space-between; align-items: center; background: white; border: 1px solid #eee; margin-bottom: 15px; padding: 15px; border-radius: 8px; }
+        .denom-label { font-size: 1.5rem; font-weight: bold; color: #1e3c72; }
+        .counter-controls { display: flex; align-items: center; gap: 15px; }
+        .ctrl-btn { width: 40px; height: 40px; border-radius: 50%; border: none; font-size: 1.5rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
+        .btn-plus { background: #1e3c72; color: white; }
+        .footer-action { padding: 20px; background: #f8f9fa; border-top: 1px solid #ddd; text-align: center; }
+        .gen-btn { width: 100%; padding: 15px; background: #d32f2f; color: white; border: none; border-radius: 8px; font-size: 1.2rem; font-weight: bold; cursor: pointer; }
+
+        /* 弹窗布局优化 */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; justify-content: center; align-items: center; }
+        .modal-content { background: white; padding: 25px; border-radius: 12px; text-align: center; width: 90%; max-width: 450px; }
+        
+        /* 修改：核销码显示样式 - 更清晰、更美观 */
+        .redemption-code-box { 
+            font-size: 1.8rem; 
+            font-weight: bold; 
+            color: #1e3c72; 
+            letter-spacing: 1px; 
+            margin: 15px 0; 
+            padding: 15px; 
+            border: 2px solid #1e3c72; 
+            background: #f8fafc;
+            border-radius: 8px;
+            line-height: 1.4;
+            text-align: center;
+            word-break: break-word;
+            box-shadow: 0 4px 6px rgba(30, 60, 114, 0.1);
+        }
+        
+        /* 新增：核销码标签 */
+        .code-label {
+            font-size: 1rem;
+            color: #666;
+            margin-bottom: 8px;
+            font-weight: normal;
+        }
+        
+        /* 新增：面值分解显示 */
+        .breakdown-display {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 10px 0;
+            flex-wrap: wrap;
+        }
+        
+        .breakdown-item {
+            background: #e8f5e9;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 1rem;
+            color: #2e7d32;
+            font-weight: bold;
+            border: 1px solid #c8e6c9;
+        }
+
+        /* 券清单滚动区域 */
+        .voucher-details { 
+            text-align: left; 
+            background: #fafafa; 
+            padding: 15px; 
+            border-radius: 8px; 
+            margin: 15px 0; 
+            max-height: 200px; 
+            overflow-y: auto; 
+            font-size: 0.9rem;
+            border: 1px solid #eee;
+        }
+        
+        .voucher-item { 
+            display: flex; 
+            justify-content: space-between; 
+            border-bottom: 1px solid #eee; 
+            padding: 8px 0; 
+            align-items: center;
+        }
+        
+        .voucher-id {
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            color: #555;
+        }
+        
+        .voucher-amount {
+            font-weight: bold;
+            color: #28a745;
+        }
+        
+        .total-display {
+            background: #fff3e0;
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 15px;
+            border-left: 4px solid #ff9800;
+        }
+        
+        .simulate-btn { 
+            width: 100%; 
+            padding: 12px; 
+            background: #28a745; 
+            color: white; 
+            border: none; 
+            border-radius: 6px; 
+            font-weight: bold; 
+            cursor: pointer; 
+            margin-top: 15px;
+            font-size: 1.1rem;
+            transition: background 0.2s;
+        }
+        
+        .simulate-btn:hover {
+            background: #1b5e20;
+        }
+        
+        .close-link { 
+            display: block; 
+            margin-top: 15px; 
+            color: #666; 
+            text-decoration: none; 
+            font-size: 0.9rem; 
+            text-align: center;
+        }
+        
+        /* 新增：响应式调整 */
+        @media (max-width: 480px) {
+            .redemption-code-box {
+                font-size: 1.5rem;
+                padding: 12px;
+            }
+            
+            .breakdown-display {
+                gap: 10px;
+            }
+            
+            .breakdown-item {
+                font-size: 0.9rem;
+                padding: 6px 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div id="voucher-data" data-limits='{{ available_counts | tojson }}' style="display: none;"></div>
+
+    <div class="header">
+        <h2>Spend Vouchers</h2>
+        <a href="/household/vouchers/{{ household_id }}">Back</a>
+    </div>
+
+    <div class="balance-bar">
+        <div class="balance-label">Current Balance</div>
+        <div class="balance-val">${{ "%.2f"|format(total_balance) }}</div>
+    </div>
+
+    <div class="selection-area">
+        {% for denom in [2, 5, 10] %}
+        <div class="denom-row">
+            <div>
+                <span class="denom-label">${{ denom }}</span>
+                <div class="denom-stock" style="color: #666; font-size: 0.9rem;">Available: {{ available_counts[denom|string] }}</div>
+            </div>
+            <div class="counter-controls">
+                <button class="ctrl-btn" onclick="updateCount({{ denom }}, -1)">-</button>
+                <input type="number" class="count-input" id="count-{{ denom }}" value="0" readonly>
+                <button class="ctrl-btn btn-plus" onclick="updateCount({{ denom }}, 1)">+</button>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="footer-action">
+        <div class="total-selected" style="margin-bottom: 15px; font-size: 1.2rem;">Total to Pay: <strong id="total-val" style="color: #d32f2f;">$0</strong></div>
+        <button class="gen-btn" id="gen-btn" disabled onclick="generateRedeemCode()">Generate Redemption Code</button>
+    </div>
+</div>
+
+<div class="modal" id="redeem-modal">
+    <div class="modal-content">
+        <h3 style="color: #333; margin-bottom: 5px;">Redemption Code</h3>
+        <p class="code-label">Show this code to merchant</p>
+        
+        <!-- 修改：核销码显示区域 -->
+        <div class="redemption-code-box" id="display-redemption-code"></div>
+        
+        <!-- 新增：面值分解显示 -->
+        <div class="breakdown-display" id="breakdown-display"></div>
+        
+        <div class="voucher-details">
+            <div style="border-bottom: 1px solid #ddd; padding-bottom: 8px; margin-bottom: 10px;">
+                <div style="display: flex; justify-content: space-between;">
+                    <span><strong>Household ID:</strong></span>
+                    <span style="font-family: monospace; font-weight: bold;">{{ household_id }}</span>
+                </div>
+            </div>
+            <p style="color: #666; font-size: 0.9rem; margin-bottom: 10px;">Voucher Details:</p>
+            <div id="voucher-list-items"></div>
+            
+            <div class="total-display">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span style="font-size: 1.1rem; font-weight: bold;">Total Value:</span>
+                    <span id="display-total" style="font-size: 1.5rem; font-weight: bold; color: #d32f2f;">$0</span>
+                </div>
+            </div>
+        </div>
+
+        <button class="simulate-btn" onclick="simulateMerchantScan()">Simulate Merchant Redemption</button>
+        <a href="#" class="close-link" onclick="closeModal()">Close & Return</a>
+    </div>
+</div>
+
+<script>
+    // 加载库存限制，注意键为字符串
+    const limits = JSON.parse(document.getElementById('voucher-data').dataset.limits);
+    let counts = { 2: 0, 5: 0, 10: 0 };
+    let activeRedemptionCode = ""; 
+
+    function updateCount(denom, delta) {
+        const newValue = counts[denom] + delta;
+        if (newValue >= 0 && newValue <= (limits[denom.toString()] || 0)) {
+            counts[denom] = newValue;
+            document.getElementById(`count-${denom}`).value = newValue;
+            calculateTotal();
+        }
+    }
+
+    function calculateTotal() {
+        let total = (counts[2] * 2) + (counts[5] * 5) + (counts[10] * 10);
+        document.getElementById('total-val').textContent = `$${total}`;
+        document.getElementById('gen-btn').disabled = (total === 0);
+    }
+
+    // 1. 生成逻辑
+    async function generateRedeemCode() {
+        const btn = document.getElementById('gen-btn');
+        btn.disabled = true;
+        btn.textContent = "Processing...";
+
+        try {
+            const res = await fetch("/household/api/redemption/generate", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ household_id: "{{ household_id }}", selected_items: counts })
+            });
+            const data = await res.json();
+
+            if (data.short_code) {
+                activeRedemptionCode = data.short_code;
+                
+                // 显示核销码
+                document.getElementById('display-redemption-code').textContent = data.short_code;
+                
+                // 显示面值分解
+                if (data.breakdown) {
+                    const breakdownDiv = document.getElementById('breakdown-display');
+                    breakdownDiv.innerHTML = '';
+                    
+                    for (const [denom, count] of Object.entries(data.breakdown)) {
+                        if (count > 0) {
+                            const item = document.createElement('div');
+                            item.className = 'breakdown-item';
+                            item.textContent = `${count} × $${denom}`;
+                            breakdownDiv.appendChild(item);
+                        }
+                    }
+                }
+                
+                // 渲染券详情
+                const listDiv = document.getElementById('voucher-list-items');
+                listDiv.innerHTML = data.selected_vouchers.map(v => `
+                    <div class="voucher-item">
+                        <span class="voucher-id">${v.id}</span>
+                        <span class="voucher-amount">$${v.amount}</span>
+                    </div>
+                `).join('');
+                
+                document.getElementById('display-total').textContent = `$${data.total_amount}`;
+                document.getElementById('redeem-modal').style.display = 'flex';
+            } else { 
+                alert("Error: " + (data.error || "Failed to generate code")); 
+            }
+        } catch (e) { 
+            console.error("Generation error:", e);
+            alert("Network Error during Generation"); 
+        } finally { 
+            btn.disabled = false; 
+            btn.textContent = "Generate Redemption Code"; 
+        }
+    }
+
+    // 2. 模拟核销逻辑
+    async function simulateMerchantScan() {
+        if (!activeRedemptionCode) return;
+        
+        try {
+            const res = await fetch("/api/merchant/redeem_by_code", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    merchant_id: "M001",
+                    barcode_number: activeRedemptionCode
+                })
+            });
+            const data = await res.json();
+            
+            if (data.success) {
+                alert(`✅ Transaction Successful!\n\nAmount: $${data.total_amount}\nHousehold: ${data.household_id}\n\nFunds will be transferred within 3 business days.`);
+                window.location.href = "/household/vouchers/{{ household_id }}";
+            } else {
+                alert("❌ Transaction Failed: " + (data.error || "Unknown error"));
+            }
+        } catch (e) {
+            console.error("Redemption error:", e);
+            alert("Network Error: Please check server connection and CSV file access.");
+        }
+    }
+
+    function closeModal() {
+        document.getElementById('redeem-modal').style.display = 'none';
+    }
+    
+    // 初始化计算
+    calculateTotal();
+</script>
+
+</body>
+</html>

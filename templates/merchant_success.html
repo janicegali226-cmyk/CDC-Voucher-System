@@ -1,0 +1,35 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Merchant Registration Result</title>
+    <style>
+      body { font-family: Arial, sans-serif; max-width: 900px; margin: 40px auto; }
+      .msg { padding: 12px; background: #f3f3f3; border: 1px solid #ddd; }
+      table { width: 100%; border-collapse: collapse; margin-top: 18px; }
+      th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+      th { background: #fafafa; width: 28%; }
+      a { display: inline-block; margin-top: 18px; }
+    </style>
+  </head>
+  <body>
+    <h2>Registration Status</h2>
+    <div class="msg">{{ message }}</div>
+
+    <h3>Your Merchant Details (10 fields)</h3>
+    <table>
+      <tr><th>merchant_id</th><td>{{ merchant.merchant_id }}</td></tr>
+      <tr><th>merchant_name</th><td>{{ merchant.merchant_name }}</td></tr>
+      <tr><th>uen</th><td>{{ merchant.uen }}</td></tr>
+      <tr><th>bank_name</th><td>{{ merchant.bank_name }}</td></tr>
+      <tr><th>bank_code</th><td>{{ merchant.bank_code }}</td></tr>
+      <tr><th>branch_code</th><td>{{ merchant.branch_code }}</td></tr>
+      <tr><th>account_number</th><td>{{ merchant.account_number }}</td></tr>
+      <tr><th>account_holder_name</th><td>{{ merchant.account_holder_name }}</td></tr>
+      <tr><th>registration_date</th><td>{{ merchant.registration_date }}</td></tr>
+      <tr><th>status</th><td>{{ merchant.status }}</td></tr>
+    </table>
+
+    <a href="/">Register another merchant</a>
+  </body>
+</html>

@@ -1,0 +1,59 @@
+<!-- templates/register_hh.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Household Registration</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 40px;
+        }
+        h2 {
+            color: #333;
+        }
+        form {
+            display: inline-block;
+            text-align: left;
+            margin: 20px auto;
+        }
+        input[type="text"] {
+            padding: 8px;
+            margin: 5px 0;
+            width: 300px;
+        }
+        input[type="submit"] {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Register Household</h2>
+
+<form method="POST" action="/household/register">
+    Name: <br>
+    <input type="text" name="name" required><br><br>
+    
+    Email: <br>
+    <input type="text" name="email" required><br><br>
+    
+    Address:<br>
+    <input type="text" name="address" required><br><br>
+    
+    Members:<br>
+    <input type="text" name="members" required><br><br>
+    
+    <input type="submit" value="Submit">
+</form>
+
+</body>
+</html>

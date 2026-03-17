@@ -1,0 +1,63 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Merchant Registration</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #f6f6f6;
+      }
+      .card {
+        width: 760px;
+        max-width: calc(100% - 32px);
+        background: #fff;
+        border-radius: 12px;
+        padding: 28px;
+        box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+      }
+      h2 { margin: 0 0 14px 0; }
+      label { display: block; margin-top: 12px; }
+      input, select { width: 100%; padding: 10px; margin-top: 6px; box-sizing: border-box; }
+      button { margin-top: 18px; padding: 10px 16px; }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <h2>Merchant Registration</h2>
+      <form action="/merchant/register" method="post">
+      <label>Merchant Name
+        <input name="merchant_name" placeholder="e.g., ABC Retail" required />
+      </label>
+
+      <label>UEN
+        <input name="uen" placeholder="e.g., 201234567Z" required />
+      </label>
+
+      <label>Bank Name
+        <select name="bank_name" required>
+          <option value="" disabled selected>Select a bank</option>
+          {% for b in bank_names %}
+            <option value="{{ b }}">{{ b }}</option>
+          {% endfor %}
+        </select>
+      </label>
+
+      <label>Account Number
+        <input name="account_number" placeholder="e.g., 123-456-789" required />
+      </label>
+
+      <label>Account Holder Name
+        <input name="account_holder_name" placeholder="e.g., ABC Retail Pte Ltd" required />
+      </label>
+
+      <button type="submit">Register</button>
+    </form>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CDC Voucher Platform</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
+    .wrap { min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+    .card { width: min(720px, 92vw); padding: 40px 24px; text-align: center; }
+    h1 { margin: 0 0 28px; font-size: 44px; font-weight: 700; }
+    .btns { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+    /* 保持按钮样式一致 */
+    a.btn { display: inline-block; padding: 14px 22px; border: 1px solid #111; border-radius: 10px; text-decoration: none; color: #111; font-size: 18px; transition: 0.2s; }
+    a.btn:hover { background: #111; color: #fff; }
+    /* 突出显示查询/登录按钮 */
+    a.btn.login { border-color: #1e3c72; color: #1e3c72; font-weight: bold; }
+    a.btn.login:hover { background: #1e3c72; color: #fff; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <h1>CDC Voucher Platform</h1>
+      <div class="btns">
+        <a class="btn" href="/household">Household Register</a>
+        <a class="btn login" href="/household/login">Check Balance / Login</a>
+        <a class="btn" href="/merchant">Merchant Register</a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
