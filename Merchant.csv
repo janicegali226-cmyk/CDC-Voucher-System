@@ -1,0 +1,8 @@
+Merchant_ID,Merchant_Name,UEN,Bank_Name,Bank_Code,Branch_Code,Account_Number,Account_Holder_Name,Registration_Date,Status
+M001,XYZ Retail,201299999A,DBS Bank Ltd,7171,1,123456789,XYZ Retail Ptd,2026/1/20,Active
+M002,ABC Retail,201234567z,Maybank Singapore,7091,1,123987654,ABC Retail ptd,2026/1/20,Active
+M003,QQQ Retail,201299999z,Bank of China Singapore,7012,1,999999999,QQQ Retail ptd,2026/1/22,Active
+M004,123 Retail,201299919z,Maybank Singapore,7091,1,1111111111,123 Retail ptd,2026/1/22,Active
+M005,321 Retail,201277771z,OCBC Bank,7339,501,1111111111,321 Retail ptd,2026/1/23,Active
+M006,QZQ Retail,20127777A,Standard Chartered Bank,7302,001,333222111,QZQ Retail ptd,2026-01-29,Active
+M007,YYY Retail,20126666A,OCBC Bank,7339,501,444555666,YYY Retail ptd,2026-01-31,Active

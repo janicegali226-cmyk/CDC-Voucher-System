@@ -1,0 +1,11 @@
+Bank_Code,Bank_Name,Branch_Code,Branch_Name,SWIFT_Code,Remarks
+7171,DBS Bank Ltd,001,Main Branch,DBSSSGSG,FAST/GIRO Enabled
+7339,OCBC Bank,501,Tampines Branch,OCBCSGSG,FAST/GIRO Enabled
+7761,UOB Bank,001,Raffles Place,UOVBSGSG,FAST/GIRO Enabled
+7091,Maybank Singapore,001,Main Branch,MBBESGSG,FAST/GIRO Enabled
+7302,Standard Chartered Bank,001,Main Branch,SCBLSGSG,FAST/GIRO Enabled
+7375,HSBC Singapore,146,Orchard Branch,HSBCSGSG,FAST/GIRO Enabled
+7171,POSB Bank,081,Toa Payoh Branch,DBSSSGSG,FAST/GIRO Enabled
+9465,Citibank Singapore,001,Main Branch,CITISGSG,FAST/GIRO Enabled
+7083,RHB Bank Berhad,001,Main Branch,RHBBSGSG,FAST/GIRO Enabled
+7012,Bank of China Singapore,001,Main Branch,BKCHSGSG,FAST/GIRO Enabled
